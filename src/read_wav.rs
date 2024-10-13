@@ -1,12 +1,15 @@
 use hound;
+use hound::SampleFormat;
 
 pub fn read_wave_file(filepath: &str) -> Result<(Vec<f32>, u32), Box<dyn std::error::Error>> {
     let mut reader = hound::WavReader::open(filepath)?;
     let spec = reader.spec();
     let sample_rate = spec.sample_rate;
-    println("sample rate: {}", sample_rate);
+    println!("sample rate: {}", sample_rate);
     let sample_format = spec.sample_format;
-    println("sample format: {:?}", sample_format);
+    println!("sample format: {:?}", sample_format);
+    let bits_per_sample = spec.bits_per_sample;
+    println!("bits per sample: {}", bits_per_sample);
 
     // Normalize to f32, downsample 24bit to 16bit
     let samples = match (sample_format, bits_per_sample) {
